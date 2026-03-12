@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Loader2, Save, Eye, Upload, Image as ImageIcon } from 'lucide-react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import logoBlack from '@/assets/logo-eiras-black.png';
 
 const AdminPostEditor = () => {
@@ -334,17 +336,27 @@ const AdminPostEditor = () => {
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 pb-20">
               <Label htmlFor="content">{t.admin.editor.content}</Label>
-              <Textarea
-                id="content"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder={t.admin.editor.contentPlaceholder}
-                rows={20}
-                className="font-mono text-sm"
-              />
-              <p className="text-xs text-muted-foreground">
+              <div className="bg-white text-black min-h-[400px]">
+                <ReactQuill
+                  theme="snow"
+                  value={content}
+                  onChange={setContent}
+                  placeholder={t.admin.editor.contentPlaceholder}
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [1, 2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                      ['link', 'blockquote', 'code-block'],
+                      ['clean']
+                    ],
+                  }}
+                  className="h-[350px]"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground pt-12">
                 {t.admin.editor.contentHelp}
               </p>
             </div>
