@@ -183,4 +183,12 @@
   .stagger-4 { animation-delay: 0.4s; }
   .stagger-5 { animation-delay: 0.5s; }
   .stagger-6 { animation-delay: 0.6s; }
+
+  /* Quill Content Adjustments */
+  .prose .ql-align-center { text-align: center; }
+  .prose .ql-align-right { text-align: right; }
+  .prose .ql-align-justify { text-align: justify; }
+  .prose ul, .prose ol {
+    list-style-position: inside;
+  }
 }
