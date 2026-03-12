@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Loader2, Save, Eye } from 'lucide-react';
+import { ArrowLeft, Loader2, Save, Eye, Upload, Image as ImageIcon } from 'lucide-react';
 import logoBlack from '@/assets/logo-eiras-black.png';
 
 const AdminPostEditor = () => {
@@ -27,6 +27,7 @@ const AdminPostEditor = () => {
   const [content, setContent] = useState('');
   const [coverImageUrl, setCoverImageUrl] = useState('');
   const [isPublished, setIsPublished] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
@@ -94,6 +95,43 @@ const AdminPostEditor = () => {
     setTitle(value);
     if (isNew) {
       setSlug(generateSlug(value));
+    }
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUploading(true);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError, data } = await supabase.storage
+        .from('blog-images')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('blog-images')
+        .getPublicUrl(filePath);
+
+      setCoverImageUrl(publicUrl);
+      toast({
+        title: t.admin.editor.uploadSuccess,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Erro no upload",
+        description: error.message,
+        variant: 'destructive',
+      });
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -252,14 +290,48 @@ const AdminPostEditor = () => {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="coverImage">{t.admin.editor.coverImage}</Label>
-              <Input
-                id="coverImage"
-                value={coverImageUrl}
-                onChange={(e) => setCoverImageUrl(e.target.value)}
-                placeholder="https://example.com/image.jpg"
-              />
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="coverImage">{t.admin.editor.coverImage}</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="file"
+                    id="fileUpload"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={isUploading}
+                    onClick={() => document.getElementById('fileUpload')?.click()}
+                  >
+                    {isUploading ? (
+                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                    ) : (
+                      <Upload className="w-4 h-4 mr-2" />
+                    )}
+                    {t.admin.editor.uploadImage}
+                  </Button>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <Input
+                    id="coverImage"
+                    value={coverImageUrl}
+                    onChange={(e) => setCoverImageUrl(e.target.value)}
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+                {coverImageUrl && (
+                  <div className="w-24 h-12 border border-border rounded overflow-hidden bg-secondary">
+                    <img src={coverImageUrl} alt="Preview" className="w-full h-full object-cover" />
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="space-y-2">
