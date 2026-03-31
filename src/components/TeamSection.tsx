@@ -25,7 +25,7 @@ export const TeamSection = () => {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center max-w-4xl mx-auto">
             {t.team.members.map((member, index) => (
               <div key={index} className="text-center">
                 <div className="aspect-square mb-6 overflow-hidden">
