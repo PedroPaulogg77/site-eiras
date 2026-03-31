@@ -3,6 +3,7 @@ import { Menu, X, Phone, Mail, Linkedin } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Language } from '@/i18n/translations';
 import logoBlack from '@/assets/logo-eiras-black.png';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const languages: { code: Language; label: string }[] = [
   { code: 'pt', label: 'PB' },
@@ -13,6 +14,8 @@ const languages: { code: Language; label: string }[] = [
 export const Header = forwardRef<HTMLElement>((_, ref) => {
   const { language, setLanguage, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const navItems = [
     { label: t.nav.about, href: '#about' },
@@ -24,6 +27,10 @@ export const Header = forwardRef<HTMLElement>((_, ref) => {
 
   const scrollToSection = (href: string) => {
     setIsMenuOpen(false);
+    if (location.pathname !== '/') {
+      navigate('/' + href);
+      return;
+    }
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -49,7 +56,7 @@ export const Header = forwardRef<HTMLElement>((_, ref) => {
 
             <div className="flex items-center gap-4 ml-auto">
               <div className="hidden md:flex items-center gap-3">
-                <a href="https://www.linkedin.com/company/eirasconsultoria/" target="_blank" rel="noopener noreferrer" className="hover:text-background/80 transition-colors" aria-label="LinkedIn">
+                <a href="https://www.linkedin.com/company/eiras-consultoria/" target="_blank" rel="noopener noreferrer" className="hover:text-background/80 transition-colors" aria-label="LinkedIn">
                   <Linkedin className="w-4 h-4" />
                 </a>
               </div>
