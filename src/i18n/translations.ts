@@ -116,11 +116,6 @@ Assim como os estudos prévios, o planejamento tributário se torna necessário 
           role: 'Coordenador Legal',
           bio: 'Responsável por assegurar que os clientes atinjam seus resultados estratégicos, com foco na identificação e mapeamento das demandas de serviços a serem atendidas pela Eiras. Inclui o atendimento proativo, além do monitoramento contínuo das necessidades, objetivos e alinhamentos essenciais às atividades dos clientes internacionais, garantindo uma gestão alinhada às suas expectativas e metas de negócio.',
         },
-        {
-          name: 'Davidson Frigeri',
-          role: 'Consultoria de Segurança e Tecnologia',
-          bio: 'Dedicado ao desenvolvimento, implementação e aplicação de políticas de segurança abrangentes para proteger os dados, sistemas e ativos da organização. Seu foco abrange segurança tecnológica e gestão geral de tecnologia, garantindo uma proteção robusta e uma eficiência operacional.',
-        },
       ],
     },
     testimonials: {
@@ -356,11 +351,6 @@ Similar to prior assessments, tax planning becomes periodically necessary as the
           role: 'Legal Coordinator',
           bio: 'Responsible for ensuring the successful achievement of clients\' strategic objectives by thoroughly identifying and mapping their service requirements to be addressed by Eiras. This role involves maintaining continuous engagement with clients through proactive monitoring of their demands, aligning their objectives with organizational capabilities, and ensuring that all activities support the clients\' international operations.',
         },
-        {
-          name: 'Davidson Frigeri',
-          role: 'Security and Technology Consulting',
-          bio: 'Dedicated to the development, implementation, and enforcement of comprehensive security policies to safeguard the organization\'s data, systems, and assets. His focus encompasses technology security and overall technology management, ensuring robust protection and optimal operational efficiency.',
-        },
       ],
     },
     testimonials: {
@@ -593,11 +583,6 @@ Al igual que los estudios previos, la planificación tributaria se torna necesar
           name: 'Silas Muniz',
           role: 'Coordinador Legal',
           bio: 'Responsable de asegurar que los clientes alcancen sus resultados estratégicos, con enfoque en la identificación y mapeo de las demandas de servicios a ser atendidas por Eiras. Incluye la atención proactiva, además del monitoreo continuo de las necesidades, objetivos y alineamientos esenciales a las actividades de los clientes internacionales, garantizando una gestión alineada con sus expectativas y metas de negocio.',
-        },
-        {
-          name: 'Davidson Frigeri',
-          role: 'Consultoría de Seguridad y Tecnología',
-          bio: 'Dedicado al desarrollo, implementación y cumplimiento de políticas de seguridad integrales para proteger los datos, sistemas y activos de la organización. Su enfoque abarca la seguridad tecnológica y la gestión general de tecnología, asegurando una protección sólida y una eficiencia operativa óptima.',
         },
       ],
     },

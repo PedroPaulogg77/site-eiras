@@ -5,9 +5,8 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import annaImg from '@/assets/anna-galvao.jpg';
 import larissaImg from '@/assets/larissa-gomes.jpeg';
 import silasImg from '@/assets/silas-muniz.jpeg';
-import davidsonImg from '@/assets/davidson-frigeri.webp';
 
-const memberPhotos = [annaImg, larissaImg, silasImg, davidsonImg];
+const memberPhotos = [annaImg, larissaImg, silasImg];
 
 export const TeamSection = () => {
   const { t } = useLanguage();
