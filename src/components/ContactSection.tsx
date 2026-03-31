@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { FadeIn } from '@/components/animations/FadeIn';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 
 export const ContactSection = () => {
   const { t } = useLanguage();
@@ -32,16 +31,20 @@ export const ContactSection = () => {
     setSubmitStatus('idle');
 
     try {
-      const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: '1e263964-3f48-4b82-8541-7625a92aa7bb',
           name: `${formData.firstName} ${formData.lastName}`,
           email: formData.email,
           company: formData.company,
-          message: `Job Function: ${formData.jobFunction}\nJob Title: ${formData.jobTitle}\nLocation: ${formData.location}`,
-        },
+          message: `Função: ${formData.jobFunction}\nCargo: ${formData.jobTitle}\nLocalização: ${formData.location}`,
+        }),
       });
 
-      if (error) throw error;
+      const result = await response.json();
+      if (!result.success) throw new Error(result.message);
 
       setSubmitStatus('success');
       setFormData({ firstName: '', lastName: '', jobFunction: '', jobTitle: '', company: '', email: '', location: '' });
