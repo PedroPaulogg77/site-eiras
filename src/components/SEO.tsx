@@ -17,7 +17,7 @@ export const SEO = ({
     image = "https://eirasconsultoria.com.br/og-image.jpg",
     url = "https://eirasconsultoria.com.br"
 }: SEOProps) => {
-    const defaultTitle = "Eiras Consultoria | Sua Ponte para o Mercado Brasileiro";
+    const defaultTitle = "Eiras Consultoria | Operational excellence for global leaders in Brazil.";
     const defaultDescription = "Consultoria especializada em contabilidade, tributação e administração para empresas internacionais que buscam crescer no Brasil. Mais de 20 anos de experiência.";
 
     const finalTitle = title ? `${title} | ${name}` : defaultTitle;
