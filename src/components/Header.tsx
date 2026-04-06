@@ -93,7 +93,7 @@ export const Header = forwardRef<HTMLElement>((_, ref) => {
       <div className="bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="container-eiras">
           <div className="flex items-center justify-between h-16">
-            <a href="#" className="flex-shrink-0">
+            <a href="/" className="flex-shrink-0">
               <img src={logoBlack} alt="Eiras Consultoria" className="h-10 w-auto" />
             </a>
 
