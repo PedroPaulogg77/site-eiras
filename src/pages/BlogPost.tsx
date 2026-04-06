@@ -58,9 +58,9 @@ const BlogPost = () => {
         .maybeSingle();
 
       if (error || !data) {
-        const mockPost = MOCK_POSTS.find(p => p.slug === slug);
-        if (mockPost) {
-          return mockPost as BlogPostData;
+        if (import.meta.env.DEV) {
+          const mockPost = MOCK_POSTS.find(p => p.slug === slug);
+          if (mockPost) return mockPost as BlogPostData;
         }
 
         console.error('Error fetching post:', error);

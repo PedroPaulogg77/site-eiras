@@ -42,12 +42,13 @@ const Blog = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id, title, title_en, title_es, slug, excerpt, excerpt_en, excerpt_es, cover_image_url, published_at, created_at')
+        .select('*')
         .eq('is_published', true)
         .order('published_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
-        return MOCK_POSTS as BlogPost[];
+        if (import.meta.env.DEV) return MOCK_POSTS as BlogPost[];
+        return [];
       }
       return data as BlogPost[];
     }
