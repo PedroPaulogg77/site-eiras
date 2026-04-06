@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 interface SEOProps {
     title?: string;
@@ -17,14 +18,19 @@ export const SEO = ({
     image = "https://eirasconsultoria.com.br/og-image.jpg",
     url = "https://eirasconsultoria.com.br"
 }: SEOProps) => {
-    const defaultTitle = "Eiras Consultoria | Operational excellence for global leaders in Brazil.";
-    const defaultDescription = "Consultoria especializada em contabilidade, tributação e administração para empresas internacionais que buscam crescer no Brasil. Mais de 20 anos de experiência.";
+    const { t, language } = useLanguage();
+    const defaultTitle = t.seo.title;
+    const defaultDescription = t.seo.description;
+
+    const langMap: Record<string, string> = { pt: 'pt-BR', en: 'en', es: 'es' };
+    const htmlLang = langMap[language] || 'pt-BR';
 
     const finalTitle = title ? `${title} | ${name}` : defaultTitle;
     const finalDescription = description || defaultDescription;
 
     return (
         <Helmet>
+            <html lang={htmlLang} />
             {/* Standard metadata tags */}
             <title>{finalTitle}</title>
             <meta name='description' content={finalDescription} />

@@ -9,7 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Loader2, Save, Eye, Upload, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Loader2, Save, Eye, Upload, Languages } from 'lucide-react';
+import { autoTranslatePost } from '@/lib/translatePost';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import logoBlack from '@/assets/logo-eiras-black.png';
@@ -27,9 +28,17 @@ const AdminPostEditor = () => {
   const [slug, setSlug] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
+  const [titleEn, setTitleEn] = useState('');
+  const [excerptEn, setExcerptEn] = useState('');
+  const [contentEn, setContentEn] = useState('');
+  const [titleEs, setTitleEs] = useState('');
+  const [excerptEs, setExcerptEs] = useState('');
+  const [contentEs, setContentEs] = useState('');
   const [coverImageUrl, setCoverImageUrl] = useState('');
   const [isPublished, setIsPublished] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isTranslating, setIsTranslating] = useState<'en' | 'es' | null>(null);
+  const [activeTab, setActiveTab] = useState<'pt' | 'en' | 'es'>('pt');
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
@@ -76,6 +85,12 @@ const AdminPostEditor = () => {
       setSlug(data.slug);
       setExcerpt(data.excerpt || '');
       setContent(data.content);
+      setTitleEn(data.title_en || '');
+      setExcerptEn(data.excerpt_en || '');
+      setContentEn(data.content_en || '');
+      setTitleEs(data.title_es || '');
+      setExcerptEs(data.excerpt_es || '');
+      setContentEs(data.content_es || '');
       setCoverImageUrl(data.cover_image_url || '');
       setIsPublished(data.is_published);
 
@@ -137,6 +152,38 @@ const AdminPostEditor = () => {
     }
   };
 
+  const serviceLabel: Record<string, string> = {
+    deepl: 'DeepL',
+    claude: 'Claude AI',
+    mymemory: 'MyMemory (qualidade básica — revise o conteúdo)',
+  };
+
+  const handleAutoTranslate = async (targetLang: 'en' | 'es') => {
+    if (!title) {
+      toast({ title: 'Preencha o título em português antes de traduzir.', variant: 'destructive' });
+      return;
+    }
+    setIsTranslating(targetLang);
+    try {
+      const result = await autoTranslatePost({ title, excerpt, content }, targetLang);
+      if (targetLang === 'en') {
+        if (result.title) setTitleEn(result.title);
+        if (result.excerpt) setExcerptEn(result.excerpt);
+        if (result.content) setContentEn(result.content);
+      } else {
+        if (result.title) setTitleEs(result.title);
+        if (result.excerpt) setExcerptEs(result.excerpt);
+        if (result.content) setContentEs(result.content);
+      }
+      const lang = targetLang === 'en' ? 'inglês' : 'espanhol';
+      toast({ title: `Traduzido para ${lang} via ${serviceLabel[result.service]}. Revise antes de publicar.` });
+    } catch {
+      toast({ title: 'Nenhum serviço de tradução disponível. Configure as chaves de API ou traduza manualmente.', variant: 'destructive' });
+    } finally {
+      setIsTranslating(null);
+    }
+  };
+
   const savePostMutation = useMutation({
     mutationFn: async (publish: boolean) => {
       if (!title.trim() || !slug.trim() || !content.trim()) {
@@ -148,6 +195,12 @@ const AdminPostEditor = () => {
         slug: slug.trim(),
         excerpt: excerpt.trim() || null,
         content: content.trim(),
+        title_en: titleEn.trim() || null,
+        excerpt_en: excerptEn.trim() || null,
+        content_en: contentEn.trim() || null,
+        title_es: titleEs.trim() || null,
+        excerpt_es: excerptEs.trim() || null,
+        content_es: contentEs.trim() || null,
         cover_image_url: coverImageUrl.trim() || null,
         is_published: publish ? true : isPublished,
         published_at: publish ? new Date().toISOString() : null,
@@ -257,41 +310,7 @@ const AdminPostEditor = () => {
 
         <div className="max-w-3xl">
           <div className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="title">{t.admin.editor.title}</Label>
-              <Input
-                id="title"
-                value={title}
-                onChange={(e) => handleTitleChange(e.target.value)}
-                placeholder={t.admin.editor.titlePlaceholder}
-                className="text-lg"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="slug">{t.admin.editor.slug}</Label>
-              <Input
-                id="slug"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                placeholder="meu-artigo"
-              />
-              <p className="text-xs text-muted-foreground">
-                {t.admin.editor.slugHelp}
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="excerpt">{t.admin.editor.excerpt}</Label>
-              <Textarea
-                id="excerpt"
-                value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
-                placeholder={t.admin.editor.excerptPlaceholder}
-                rows={2}
-              />
-            </div>
-
+            {/* Cover Image - shared across all languages */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label htmlFor="coverImage">{t.admin.editor.coverImage}</Label>
@@ -336,29 +355,155 @@ const AdminPostEditor = () => {
               </div>
             </div>
 
-            <div className="space-y-2 pb-20">
-              <Label htmlFor="content">{t.admin.editor.content}</Label>
-              <div className="bg-white text-black min-h-[400px]">
-                <ReactQuill
-                  theme="snow"
-                  value={content}
-                  onChange={setContent}
-                  placeholder={t.admin.editor.contentPlaceholder}
-                  modules={{
-                    toolbar: [
-                      [{ 'header': [1, 2, 3, false] }],
-                      ['bold', 'italic', 'underline', 'strike'],
-                      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                      ['link', 'blockquote', 'code-block'],
-                      ['clean']
-                    ],
-                  }}
-                  className="h-[350px]"
-                />
+            {/* Language tabs */}
+            <div>
+              <div className="flex border-b border-border mb-6">
+                {(['pt', 'en', 'es'] as const).map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => setActiveTab(lang)}
+                    className={`px-6 py-2 text-sm font-medium transition-colors ${
+                      activeTab === lang
+                        ? 'border-b-2 border-foreground text-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {lang === 'pt' ? '🇧🇷 Português' : lang === 'en' ? '🇺🇸 English' : '🇪🇸 Español'}
+                  </button>
+                ))}
               </div>
-              <p className="text-xs text-muted-foreground pt-12">
-                {t.admin.editor.contentHelp}
-              </p>
+
+              {/* PT Tab */}
+              {activeTab === 'pt' && (
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="title">{t.admin.editor.title}</Label>
+                    <Input
+                      id="title"
+                      value={title}
+                      onChange={(e) => handleTitleChange(e.target.value)}
+                      placeholder={t.admin.editor.titlePlaceholder}
+                      className="text-lg"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="slug">{t.admin.editor.slug}</Label>
+                    <Input
+                      id="slug"
+                      value={slug}
+                      onChange={(e) => setSlug(e.target.value)}
+                      placeholder="meu-artigo"
+                    />
+                    <p className="text-xs text-muted-foreground">{t.admin.editor.slugHelp}</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="excerpt">{t.admin.editor.excerpt}</Label>
+                    <Textarea
+                      id="excerpt"
+                      value={excerpt}
+                      onChange={(e) => setExcerpt(e.target.value)}
+                      placeholder={t.admin.editor.excerptPlaceholder}
+                      rows={2}
+                    />
+                  </div>
+                  <div className="space-y-2 pb-20">
+                    <Label>{t.admin.editor.content}</Label>
+                    <div className="bg-white text-black min-h-[400px]">
+                      <ReactQuill
+                        theme="snow"
+                        value={content}
+                        onChange={setContent}
+                        placeholder={t.admin.editor.contentPlaceholder}
+                        modules={{ toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered' }, { 'list': 'bullet' }], ['link', 'blockquote', 'code-block'], ['clean']] }}
+                        className="h-[350px]"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground pt-12">{t.admin.editor.contentHelp}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* EN Tab */}
+              {activeTab === 'en' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Preencha manualmente ou use auto-tradução do português.</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={isTranslating !== null}
+                      onClick={() => handleAutoTranslate('en')}
+                    >
+                      {isTranslating === 'en' ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Languages className="w-4 h-4 mr-2" />}
+                      Auto-traduzir PT → EN
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="titleEn">Título (EN)</Label>
+                    <Input id="titleEn" value={titleEn} onChange={(e) => setTitleEn(e.target.value)} placeholder="Post title in English" className="text-lg" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="excerptEn">Resumo (EN)</Label>
+                    <Textarea id="excerptEn" value={excerptEn} onChange={(e) => setExcerptEn(e.target.value)} placeholder="Short excerpt in English" rows={2} />
+                  </div>
+                  <div className="space-y-2 pb-20">
+                    <Label>Conteúdo (EN)</Label>
+                    <p className="text-xs text-muted-foreground">Cole o HTML traduzido ou escreva o conteúdo em inglês.</p>
+                    <div className="bg-white text-black min-h-[400px]">
+                      <ReactQuill
+                        theme="snow"
+                        value={contentEn}
+                        onChange={setContentEn}
+                        placeholder="Post content in English"
+                        modules={{ toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered' }, { 'list': 'bullet' }], ['link', 'blockquote', 'code-block'], ['clean']] }}
+                        className="h-[350px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ES Tab */}
+              {activeTab === 'es' && (
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Preencha manualmente ou use auto-tradução do português.</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={isTranslating !== null}
+                      onClick={() => handleAutoTranslate('es')}
+                    >
+                      {isTranslating === 'es' ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Languages className="w-4 h-4 mr-2" />}
+                      Auto-traduzir PT → ES
+                    </Button>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="titleEs">Título (ES)</Label>
+                    <Input id="titleEs" value={titleEs} onChange={(e) => setTitleEs(e.target.value)} placeholder="Título del post en español" className="text-lg" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="excerptEs">Resumo (ES)</Label>
+                    <Textarea id="excerptEs" value={excerptEs} onChange={(e) => setExcerptEs(e.target.value)} placeholder="Resumen corto en español" rows={2} />
+                  </div>
+                  <div className="space-y-2 pb-20">
+                    <Label>Conteúdo (ES)</Label>
+                    <p className="text-xs text-muted-foreground">Cole o HTML traduzido ou escreva o conteúdo em espanhol.</p>
+                    <div className="bg-white text-black min-h-[400px]">
+                      <ReactQuill
+                        theme="snow"
+                        value={contentEs}
+                        onChange={setContentEs}
+                        placeholder="Contenido del post en español"
+                        modules={{ toolbar: [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ 'list': 'ordered' }, { 'list': 'bullet' }], ['link', 'blockquote', 'code-block'], ['clean']] }}
+                        className="h-[350px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

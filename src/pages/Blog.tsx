@@ -10,12 +10,17 @@ import { format } from 'date-fns';
 import { ptBR, enUS, es } from 'date-fns/locale';
 import { SEO } from '@/components/SEO';
 import { MOCK_POSTS } from '@/lib/mockPosts';
+import { getLocalizedField } from '@/lib/translatePost';
 
 interface BlogPost {
   id: string;
   title: string;
+  title_en?: string | null;
+  title_es?: string | null;
   slug: string;
   excerpt: string | null;
+  excerpt_en?: string | null;
+  excerpt_es?: string | null;
   cover_image_url: string | null;
   published_at: string | null;
   created_at: string;
@@ -37,7 +42,7 @@ const Blog = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id, title, slug, excerpt, cover_image_url, published_at, created_at')
+        .select('id, title, title_en, title_es, slug, excerpt, excerpt_en, excerpt_es, cover_image_url, published_at, created_at')
         .eq('is_published', true)
         .order('published_at', { ascending: false });
 
@@ -110,11 +115,11 @@ const Blog = () => {
                       </span>
                     </div>
                     <h2 className="text-lg font-bold text-foreground mb-2 group-hover:text-accent transition-colors line-clamp-2">
-                      {post.title}
+                      {getLocalizedField(post, 'title', language)}
                     </h2>
                     {post.excerpt && (
                       <p className="text-sm text-muted-foreground line-clamp-3">
-                        {post.excerpt}
+                        {getLocalizedField(post, 'excerpt', language)}
                       </p>
                     )}
                   </div>

@@ -9,7 +9,13 @@ export const translations = {
       team: 'Time',
       testimonials: 'Avaliações',
       contact: 'Contato',
+      blog: 'Blog',
       clientArea: 'Área do Cliente',
+      language: 'Idioma',
+    },
+    seo: {
+      title: 'Eiras Consultoria | Excelência operacional para líderes globais no Brasil.',
+      description: 'Consultoria especializada em contabilidade, tributação e administração para empresas internacionais que buscam crescer no Brasil. Mais de 20 anos de experiência.',
     },
     hero: {
       tagline: 'Abordagem Global, Expertise Local',
@@ -242,7 +248,13 @@ Assim como os estudos prévios, o planejamento tributário se torna necessário 
       team: 'Team',
       testimonials: 'Testimonials',
       contact: 'Contact',
+      blog: 'Blog',
       clientArea: 'Client Area',
+      language: 'Language',
+    },
+    seo: {
+      title: 'Eiras Consultoria | Operational excellence for global leaders in Brazil.',
+      description: 'Specialized consulting in accounting, taxation and administration for international companies seeking to grow in Brazil. Over 20 years of experience.',
     },
     hero: {
       tagline: 'Global Approach, Local Expertise',
@@ -477,7 +489,13 @@ Similar to prior assessments, tax planning becomes periodically necessary as the
       team: 'Equipo',
       testimonials: 'Testimonios',
       contact: 'Contacto',
+      blog: 'Blog',
       clientArea: 'Área del Cliente',
+      language: 'Idioma',
+    },
+    seo: {
+      title: 'Eiras Consultoria | Excelencia operativa para líderes globales en Brasil.',
+      description: 'Consultoría especializada en contabilidad, tributación y administración para empresas internacionales que buscan crecer en Brasil. Más de 20 años de experiencia.',
     },
     hero: {
       tagline: 'Enfoque Global, Experiencia Local',

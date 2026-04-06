@@ -10,12 +10,19 @@ import { format } from 'date-fns';
 import { ptBR, enUS, es } from 'date-fns/locale';
 import { SEO } from '@/components/SEO';
 import { MOCK_POSTS } from '@/lib/mockPosts';
+import { getLocalizedField } from '@/lib/translatePost';
 
 interface BlogPostData {
   id: string;
   title: string;
+  title_en?: string | null;
+  title_es?: string | null;
   content: string;
+  content_en?: string | null;
+  content_es?: string | null;
   excerpt: string | null;
+  excerpt_en?: string | null;
+  excerpt_es?: string | null;
   cover_image_url: string | null;
   published_at: string | null;
   created_at: string;
@@ -97,8 +104,8 @@ const BlogPost = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title={post.title}
-        description={post.excerpt || `Leia sobre ${post.title} no blog da Eiras Consultoria`}
+        title={getLocalizedField(post, 'title', language)}
+        description={getLocalizedField(post, 'excerpt', language) || getLocalizedField(post, 'title', language)}
         image={post.cover_image_url || undefined}
         type="article"
         url={`https://eirasconsultoria.com.br/blog/${slug}`}
@@ -116,7 +123,7 @@ const BlogPost = () => {
 
           <header className="mb-8">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-              {post.title}
+              {getLocalizedField(post, 'title', language)}
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
@@ -140,7 +147,7 @@ const BlogPost = () => {
 
           <div
             className="prose prose-lg max-w-none prose-neutral dark:prose-invert"
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: getLocalizedField(post, 'content', language) }}
           />
         </article>
       </main>

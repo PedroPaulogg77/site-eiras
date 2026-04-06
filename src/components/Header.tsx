@@ -23,10 +23,15 @@ export const Header = forwardRef<HTMLElement>((_, ref) => {
     { label: t.nav.ceo, href: '#ceo' },
     { label: t.nav.team, href: '#team' },
     { label: t.nav.contact, href: '#contact' },
+    { label: t.nav.blog, href: '/blog' },
   ];
 
   const scrollToSection = (href: string) => {
     setIsMenuOpen(false);
+    if (!href.startsWith('#')) {
+      navigate(href);
+      return;
+    }
     if (location.pathname !== '/') {
       navigate('/' + href);
       return;
@@ -139,7 +144,7 @@ export const Header = forwardRef<HTMLElement>((_, ref) => {
                 ))}
 
                 <div className="px-4 pt-4 border-t border-border">
-                  <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Idioma</p>
+                  <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">{t.nav.language}</p>
                   <div className="flex gap-3">
                     {languages.map((lang) => (
                       <button
