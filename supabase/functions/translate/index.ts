@@ -18,7 +18,6 @@ async function translateWithDeepl(text: string, targetLang: "en" | "es", isHtml:
   if (!key) throw new Error("No DeepL key");
 
   const body = new URLSearchParams({
-    auth_key: key,
     text,
     source_lang: "PT",
     target_lang: targetLang === "en" ? "EN" : "ES",
@@ -27,11 +26,17 @@ async function translateWithDeepl(text: string, targetLang: "en" | "es", isHtml:
 
   const res = await fetch("https://api-free.deepl.com/v2/translate", {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization": `DeepL-Auth-Key ${key}`,
+    },
     body,
   });
 
-  if (!res.ok) throw new Error(`DeepL error: ${res.status}`);
+  if (!res.ok) {
+    const detail = await res.text();
+    throw new Error(`DeepL error: ${res.status} - ${detail}`);
+  }
   const data = await res.json();
   const translated = data.translations?.[0]?.text;
   if (!translated) throw new Error("DeepL returned empty translation");
@@ -57,7 +62,7 @@ async function translateWithClaude(text: string, targetLang: "en" | "es", isHtml
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
+      model: "claude-3-5-haiku-20241022",
       max_tokens: 4096,
       messages: [
         {
