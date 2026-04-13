@@ -17,6 +17,11 @@ const Admin = lazy(() => import("./pages/Admin"));
 const AdminPostEditor = lazy(() => import("./pages/AdminPostEditor"));
 const AdminContent = lazy(() => import("./pages/AdminContent"));
 const AdminContentEditor = lazy(() => import("./pages/AdminContentEditor"));
+const AdminEbooks = lazy(() => import("./pages/AdminEbooks"));
+const AdminEbookEditor = lazy(() => import("./pages/AdminEbookEditor"));
+const AdminEbookLeads = lazy(() => import("./pages/AdminEbookLeads"));
+const Ebooks = lazy(() => import("./pages/Ebooks"));
+const EbookLanding = lazy(() => import("./pages/EbookLanding"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -40,6 +45,11 @@ const App = () => (
                   <Route path="/admin/posts/:id" element={<AdminPostEditor />} />
                   <Route path="/admin/content" element={<AdminContent />} />
                   <Route path="/admin/content/:section" element={<AdminContentEditor />} />
+                  <Route path="/admin/ebooks" element={<AdminEbooks />} />
+                  <Route path="/admin/ebooks/:id" element={<AdminEbookEditor />} />
+                  <Route path="/admin/ebooks/:id/leads" element={<AdminEbookLeads />} />
+                  <Route path="/ebooks" element={<Ebooks />} />
+                  <Route path="/ebooks/:slug" element={<EbookLanding />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>

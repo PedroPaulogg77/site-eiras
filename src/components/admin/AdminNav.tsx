@@ -1,8 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
-import { FileText, Layout } from 'lucide-react';
+import { FileText, Layout, BookOpen } from 'lucide-react';
 
 const tabs = [
   { label: 'Blog', icon: FileText, href: '/admin' },
+  { label: 'Ebooks', icon: BookOpen, href: '/admin/ebooks' },
   { label: 'Conteúdo do Site', icon: Layout, href: '/admin/content' },
 ];
 

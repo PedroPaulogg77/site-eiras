@@ -14,6 +14,101 @@ export type Database = {
   }
   public: {
     Tables: {
+      ebooks: {
+        Row: {
+          id: string
+          title: string
+          title_en: string | null
+          title_es: string | null
+          description: string
+          description_en: string | null
+          description_es: string | null
+          slug: string
+          cover_image_url: string | null
+          file_url: string
+          requires_contact: boolean
+          show_on_homepage: boolean
+          is_published: boolean
+          download_count: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          title: string
+          title_en?: string | null
+          title_es?: string | null
+          description?: string
+          description_en?: string | null
+          description_es?: string | null
+          slug: string
+          cover_image_url?: string | null
+          file_url: string
+          requires_contact?: boolean
+          show_on_homepage?: boolean
+          is_published?: boolean
+          download_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          title?: string
+          title_en?: string | null
+          title_es?: string | null
+          description?: string
+          description_en?: string | null
+          description_es?: string | null
+          slug?: string
+          cover_image_url?: string | null
+          file_url?: string
+          requires_contact?: boolean
+          show_on_homepage?: boolean
+          is_published?: boolean
+          download_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ebook_leads: {
+        Row: {
+          id: string
+          ebook_id: string
+          name: string
+          email: string
+          phone: string | null
+          company: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          ebook_id: string
+          name: string
+          email: string
+          phone?: string | null
+          company?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          ebook_id?: string
+          name?: string
+          email?: string
+          phone?: string | null
+          company?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ebook_leads_ebook_id_fkey"
+            columns: ["ebook_id"]
+            isOneToOne: false
+            referencedRelation: "ebooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_content: {
         Row: {
           id: string
