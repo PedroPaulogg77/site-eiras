@@ -1,9 +1,12 @@
 import { useLanguage } from '@/i18n/LanguageContext';
 import { FadeIn } from '@/components/animations/FadeIn';
 import micheleEiras from '@/assets/michele-eiras.jpg';
+import { useSiteImages, getImageUrl } from '@/hooks/useSiteImages';
 
 export const CEOSection = () => {
   const { t } = useLanguage();
+  const { data: imagesMap } = useSiteImages();
+  const photoUrl = getImageUrl(imagesMap, 'ceo-photo', micheleEiras);
 
   const paragraphs = t.ceo.content.split('\n\n');
 
@@ -15,7 +18,7 @@ export const CEOSection = () => {
             <div className="lg:col-span-2 order-1 lg:order-1">
               <div className="aspect-[3/4] max-w-sm mx-auto lg:mx-0 overflow-hidden">
                 <img
-                  src={micheleEiras}
+                  src={photoUrl}
                   alt="Michele Eiras - CEO da Eiras Consultoria"
                   className="w-full h-full object-cover"
                 />

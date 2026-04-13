@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
+import { AdminNav } from '@/components/admin/AdminNav';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -15,7 +16,8 @@ import {
   LogOut,
   Loader2,
   ArrowLeft,
-  FileText
+  FileText,
+  Linkedin
 } from 'lucide-react';
 import logoBlack from '@/assets/logo-eiras-black.png';
 import { format } from 'date-fns';
@@ -37,6 +39,7 @@ const Admin = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [linkedinLoadingId, setLinkedinLoadingId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
@@ -135,6 +138,21 @@ const Admin = () => {
     deletePostMutation.mutate(id);
   };
 
+  const shareToLinkedIn = async (post: BlogPost) => {
+    setLinkedinLoadingId(post.id);
+    try {
+      const { error } = await supabase.functions.invoke('post-to-linkedin', {
+        body: { title: post.title, excerpt: post.excerpt ?? '', slug: post.slug },
+      });
+      if (error) throw error;
+      toast({ title: 'Post compartilhado no LinkedIn!' });
+    } catch {
+      toast({ title: 'Erro ao compartilhar no LinkedIn', variant: 'destructive' });
+    } finally {
+      setLinkedinLoadingId(null);
+    }
+  };
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
@@ -180,6 +198,8 @@ const Admin = () => {
           </div>
         </div>
       </header>
+
+      <AdminNav />
 
       {/* Main Content */}
       <main className="container-eiras py-8">
@@ -261,6 +281,21 @@ const Admin = () => {
                             <Eye className="w-4 h-4" />
                           )}
                         </Button>
+                        {post.is_published && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => shareToLinkedIn(post)}
+                            disabled={linkedinLoadingId === post.id}
+                            title="Compartilhar no LinkedIn"
+                          >
+                            {linkedinLoadingId === post.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Linkedin className="w-4 h-4 text-[#0A66C2]" />
+                            )}
+                          </Button>
+                        )}
                         <Button
                           variant="ghost"
                           size="sm"

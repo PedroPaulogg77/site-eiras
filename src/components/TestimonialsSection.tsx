@@ -2,26 +2,9 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { FadeIn } from '@/components/animations/FadeIn';
 import { Quote } from 'lucide-react';
 
-const placeholderTestimonials = [
-  {
-    quote: '"Placeholder testimonial text. Real testimonial coming soon."',
-    author: 'Client Name',
-    company: 'Company Name',
-  },
-  {
-    quote: '"Placeholder testimonial text. Real testimonial coming soon."',
-    author: 'Client Name',
-    company: 'Company Name',
-  },
-  {
-    quote: '"Placeholder testimonial text. Real testimonial coming soon."',
-    author: 'Client Name',
-    company: 'Company Name',
-  },
-];
-
 export const TestimonialsSection = () => {
   const { t } = useLanguage();
+  const items = t.testimonials.items ?? [];
 
   return (
     <section id="testimonials" className="section-padding bg-secondary">
@@ -36,27 +19,29 @@ export const TestimonialsSection = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {placeholderTestimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-background p-8 border border-border"
-              >
-                <Quote className="w-8 h-8 text-muted-foreground mb-6" />
-                <p className="text-foreground mb-6 italic">
-                  {testimonial.quote}
-                </p>
-                <div>
-                  <p className="font-bold text-foreground">{testimonial.author}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+          {items.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-8">
+              {items.map((testimonial, index) => (
+                <div
+                  key={index}
+                  className="bg-background p-8 border border-border"
+                >
+                  <Quote className="w-8 h-8 text-muted-foreground mb-6" />
+                  <p className="text-foreground mb-6 italic">
+                    {testimonial.quote}
+                  </p>
+                  <div>
+                    <p className="font-bold text-foreground">{testimonial.author}</p>
+                    <p className="text-sm text-muted-foreground">{testimonial.company}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-center text-muted-foreground mt-12 italic">
-            {t.testimonials.placeholder}
-          </p>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center text-muted-foreground italic">
+              {t.testimonials.placeholder}
+            </p>
+          )}
         </FadeIn>
       </div>
     </section>

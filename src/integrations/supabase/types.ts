@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      site_content: {
+        Row: {
+          id: string
+          section: string
+          lang: string
+          value: Json
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          id?: string
+          section: string
+          lang?: string
+          value?: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          id?: string
+          section?: string
+          lang?: string
+          value?: Json
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      site_images: {
+        Row: {
+          id: string
+          image_key: string
+          storage_path: string
+          public_url: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          id?: string
+          image_key: string
+          storage_path: string
+          public_url: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          id?: string
+          image_key?: string
+          storage_path?: string
+          public_url?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author_id: string | null

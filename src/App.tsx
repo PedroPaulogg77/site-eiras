@@ -15,6 +15,8 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const Admin = lazy(() => import("./pages/Admin"));
 const AdminPostEditor = lazy(() => import("./pages/AdminPostEditor"));
+const AdminContent = lazy(() => import("./pages/AdminContent"));
+const AdminContentEditor = lazy(() => import("./pages/AdminContentEditor"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
                   <Route path="/admin/login" element={<AdminLogin />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/admin/posts/:id" element={<AdminPostEditor />} />
+                  <Route path="/admin/content" element={<AdminContent />} />
+                  <Route path="/admin/content/:section" element={<AdminContentEditor />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>

@@ -2,9 +2,12 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { ArrowDown } from 'lucide-react';
 import { FadeIn } from '@/components/animations/FadeIn';
 import heroBg from '@/assets/hero-bg.jpg';
+import { useSiteImages, getImageUrl } from '@/hooks/useSiteImages';
 
 export const HeroSection = () => {
   const { t } = useLanguage();
+  const { data: imagesMap } = useSiteImages();
+  const bgUrl = getImageUrl(imagesMap, 'hero-bg', heroBg);
 
   const scrollToContact = () => {
     const element = document.querySelector('#contact');
@@ -19,7 +22,7 @@ export const HeroSection = () => {
   return (
     <section className="min-h-screen flex flex-col justify-center items-center relative pt-[104px] overflow-hidden">
       <div className="absolute inset-0 z-0" style={{
-        backgroundImage: `url(${heroBg})`,
+        backgroundImage: `url(${bgUrl})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'

@@ -5,11 +5,13 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import annaImg from '@/assets/anna-galvao.jpg';
 import larissaImg from '@/assets/larissa-gomes.jpeg';
 import silasImg from '@/assets/silas-muniz.jpeg';
+import { useSiteImages, getImageUrl } from '@/hooks/useSiteImages';
 
-const memberPhotos = [annaImg, larissaImg, silasImg];
+const fallbackPhotos = [annaImg, larissaImg, silasImg];
 
 export const TeamSection = () => {
   const { t } = useLanguage();
+  const { data: imagesMap } = useSiteImages();
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   return (
@@ -30,7 +32,7 @@ export const TeamSection = () => {
               <div key={index} className="text-center">
                 <div className="aspect-square mb-6 overflow-hidden">
                   <img
-                    src={memberPhotos[index]}
+                    src={getImageUrl(imagesMap, `team-${index}`, fallbackPhotos[index])}
                     alt={member.name}
                     className="w-full h-full object-cover"
                   />

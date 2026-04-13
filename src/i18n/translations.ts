@@ -128,6 +128,7 @@ Assim como os estudos prévios, o planejamento tributário se torna necessário 
       title: 'Avaliações',
       subtitle: 'O que nossos clientes dizem',
       placeholder: 'Avaliações em breve.',
+      items: [] as Array<{ quote: string; author: string; company: string }>,
     },
     servicesCategories: {
       national: {
@@ -369,6 +370,7 @@ Similar to prior assessments, tax planning becomes periodically necessary as the
       title: 'Testimonials',
       subtitle: 'What our clients say',
       placeholder: 'Testimonials coming soon.',
+      items: [] as Array<{ quote: string; author: string; company: string }>,
     },
     servicesCategories: {
       national: {
@@ -608,6 +610,7 @@ Al igual que los estudios previos, la planificación tributaria se torna necesar
       title: 'Testimonios',
       subtitle: 'Lo que dicen nuestros clientes',
       placeholder: 'Testimonios próximamente.',
+      items: [] as Array<{ quote: string; author: string; company: string }>,
     },
     servicesCategories: {
       national: {
