@@ -1,0 +1,22 @@
+{
+  "name": "Eiras Consultoria",
+  "short_name": "Eiras",
+  "description": "Consultoria especializada em contabilidade, tributação e administração para empresas internacionais no Brasil.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
