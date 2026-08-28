@@ -56,7 +56,7 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title={t.blog.title} description={t.blog.subtitle} url="https://eirasconsultoria.com.br/blog" />
+      <SEO title={t.blog.title} description={t.blog.subtitle} url="https://www.eirasconsultoria.com.br/blog" />
       <Header />
       <main className="pt-32 pb-16">
         <div className="container-eiras">

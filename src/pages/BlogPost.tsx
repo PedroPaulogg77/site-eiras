@@ -108,7 +108,7 @@ const BlogPost = () => {
         description={getLocalizedField(post, 'excerpt', language) || getLocalizedField(post, 'title', language)}
         image={post.cover_image_url || undefined}
         type="article"
-        url={`https://eirasconsultoria.com.br/blog/${slug}`}
+        url={`https://www.eirasconsultoria.com.br/blog/${slug}`}
       />
       <Header />
       <main className="pt-32 pb-16">

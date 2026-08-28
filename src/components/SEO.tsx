@@ -15,8 +15,8 @@ export const SEO = ({
     description,
     name = "Eiras Consultoria",
     type = "website",
-    image = "https://eirasconsultoria.com.br/og-image.jpg",
-    url = "https://eirasconsultoria.com.br"
+    image = "https://www.eirasconsultoria.com.br/og-image.jpg",
+    url = "https://www.eirasconsultoria.com.br"
 }: SEOProps) => {
     const { t, language } = useLanguage();
     const defaultTitle = t.seo.title;

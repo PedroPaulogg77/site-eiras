@@ -2,21 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://eirasconsultoria.com.br/</loc>
+    <loc>https://www.eirasconsultoria.com.br/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://eirasconsultoria.com.br/og-image.jpg</image:loc>
+      <image:loc>https://www.eirasconsultoria.com.br/og-image.jpg</image:loc>
       <image:title>Eiras Consultoria</image:title>
     </image:image>
   </url>
   <url>
-    <loc>https://eirasconsultoria.com.br/blog</loc>
+    <loc>https://www.eirasconsultoria.com.br/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://eirasconsultoria.com.br/ebooks</loc>
+    <loc>https://www.eirasconsultoria.com.br/ebooks</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
