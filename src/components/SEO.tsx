@@ -39,7 +39,12 @@ export const SEO = ({
             <meta property="og:type" content={type} />
             <meta property="og:title" content={finalTitle} />
             <meta property="og:description" content={finalDescription} />
+            <meta property="og:site_name" content={name} />
             <meta property="og:image" content={image} />
+            <meta property="og:image:secure_url" content={image} />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+            <meta property="og:image:alt" content={name} />
             <meta property="og:url" content={url} />
 
             {/* Twitter tags */}
@@ -48,6 +53,10 @@ export const SEO = ({
             <meta name="twitter:title" content={finalTitle} />
             <meta name="twitter:description" content={finalDescription} />
             <meta name="twitter:image" content={image} />
+            <meta name="twitter:image:alt" content={name} />
+
+            {/* Canonical */}
+            <link rel="canonical" href={url} />
         </Helmet>
     );
 };
